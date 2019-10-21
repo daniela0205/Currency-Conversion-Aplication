@@ -51,42 +51,20 @@ var app = {
 function eurosDolares(valNum) {
     //document.getElementById("inputDolares").value=valNum*1.156236;
 
-    $.ajax({
-        url: 'http://apilayer.net/api/convert?access_key=MY_ACCESS_KEY&from=USD&to=EUR&amount=valNum',dataType:'jsonp',
-        success: function(json)
-         {
-            // Update the pricing element with the Euro  value
-            document.querySelector('.price').html('Euro' + json.result);
-        }
-    });
-
-
+    var http = new XMLHttpRequest();
+    const url = 'http://www.apilayer.net/api/live?access_key=52924421200826ef5a4aeb0f961b3199';
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = (e) => {
+            var response = http.responseText;
+            var responseJSON = JSON.parse(response); 
+            console.log(responseJSON);
+            console.log(response);
+            var convertion = responseJSON.quotes.USDEUR;
+            
+            var num1 = valNum;
+            var result = num1 * convertion;
+            document.getElementById('demo').innerHTML=result;
+    }
   }
-
-  function dolaresEuros(valNum) {
-   
-    $.ajax({
-        url: 'http://apilayer.net/api/convert?access_key=MY_ACCESS_KEY&from=EUR&to=USD&amount=valNum',dataType:'jsonp',
-        success: function(json)
-         {
-            // Update the pricing element with the Euro  value
-            document.querySelector('.price').html('USD' + json.result);
-        }
-    });
-  }
-
-  function CALLBACK_FUNCTION(){
-
-    {
-        "success"=true,
-        "terms"="https:\/\/currencylayer.com\/terms",
-        "privacy"="https:\/\/currencylayer.com\/privacy",
-        "timestamp"=1494266647,
-        "source"="USD",
-        "quotes"={
-          "USDEUR":0.914798
-          
-        }
-      }
-
-  }
+ 
